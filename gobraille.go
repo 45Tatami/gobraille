@@ -9,15 +9,15 @@ import (
 	_ "image/jpeg"
 	_ "image/png"
 )
-import "gobraille/converter"
+import "github.com/45Tatami/gobraille/converter"
 
 
 func main() {
 	var width int = 2
 	var args []string = os.Args[1:]
-	imageIn := loadImage(args[0])
 
 	if len(args) > 1{
+		imageIn := loadImage(args[0])
 		w, err := strconv.Atoi(args[1])
 
 		if err != nil {
@@ -27,12 +27,12 @@ func main() {
 			log.Fatal("Width out of bounds")
 		}
 		width = w
+		dyn := converter.GetConverter(converter.PTP_AVERAGED, imageIn, width)
+		fmt.Println(dyn.Convert())
+	} else { // Interactive mode
+		fmt.Println("Not implemented yet")
 	}
 
-	dyn := converter.GetConverter(converter.EXACT, imageIn, width)
-//	stat := converter.GetConverter(converter.STATIC, imageIn, width)
-//	fmt.Println(stat.Convert())
-	fmt.Println(dyn.Convert())
 }
 
 func loadImage(path string) image.Image {
